@@ -17,12 +17,12 @@ gulp.task('connect', function () {
 });
 //===========================================
 gulp.task('html', function(){
-	gulp.src('app/*.html')
+	gulp.src('build/*.html')
 		.pipe(connect.reload());
 });
 //===========================================
 gulp.task('scss', function () {
-	gulp.src('app/scss/*.scss')
+	gulp.src('build/scss/*.scss')
 		.pipe(sourcemaps.init())
 		.pipe(sass())
 		.pipe(prefixer('last 10 version'))
@@ -31,23 +31,23 @@ gulp.task('scss', function () {
 			path.extname = ".min.css"
 		}))
 		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('app/css/'))
+		.pipe(gulp.dest('build/css/'))
 		.pipe(connect.reload());
 });
 gulp.task('css', function () {
-	gulp.src('app/scss/*.scss')
+	gulp.src('build/scss/*.scss')
 		.pipe(sourcemaps.init())
 		.pipe(sass())
 		.pipe(prefixer('last 15 version'))
 		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('app/css/'))
+		.pipe(gulp.dest('build/css/'))
 		.pipe(connect.reload());
 });
 //===========================================
 gulp.task('watch', function(){
-	gulp.watch('app/scss/**/*.scss', ['scss'])
-	gulp.watch('app/css/**/*.css', ['css'])
-	gulp.watch('app/*.html', ['html'])
+	gulp.watch('build/scss/**/*.scss', ['scss'])
+	gulp.watch('build/css/**/*.css', ['css'])
+	gulp.watch('build/*.html', ['html'])
 });
 //===========================================
 gulp.task('default', ['connect', 'html', 'scss', 'css', 'watch']);
