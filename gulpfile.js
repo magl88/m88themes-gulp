@@ -3,10 +3,12 @@
 var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	rename = require('gulp-rename'),
-	connect = require('gulp-connect'),
 	prefixer = require('gulp-autoprefixer'),
 	livereload = require('gulp-livereload'),
 	minifyCss  = require('gulp-minify-css'),
+	uglify = require('gulp-uglify'),
+	imagemin = require('gulp-imagemin'),
+	pngquant = require('imagemin-pngquant'),
 	browserSync = require("browser-sync"),
 	reload = browserSync.reload,
 	sourcemaps = require('gulp-sourcemaps'),
@@ -23,7 +25,10 @@ var path = {
 	},
 	build: {
 		html: 'build/**/*.html',
-		js: 'build/js/**/*.js',
+		php: 'build/**/*.php',
+		jsW: 'build/js/**/*.js',
+		js: 'build/js/scripts.js',
+		jsMin: 'build/js/',
 		sass: 'build/sass/**/*.+(sass|scss)',
 		css: 'build/css/',
 		img: 'build/img/**/*.*',
@@ -36,45 +41,67 @@ var path = {
 //===========================================
 var config = {
 	server: {
-		baseDir: "./build"
+		baseDir: "./build/"
 	},
 	tunnel: true,
 	host: 'localhost',
 	port: 9000,
 	logPrefix: "Frontend_Devil"
 };
+
 gulp.task('webserver', function () {
 	browserSync(config);
-});
-gulp.task('connect', function () {
-	connect.server({
-		root: './build',
-		livereload: true
-	})
 });
 //===========================================
 gulp.task('clean', function (cb) {
 	rimraf(path.clean, cb);
 });
-//===========================================
+// HTML
+// ===========================================
 gulp.task('html:build', function(){
 	gulp.src(path.build.html)
-		.pipe(connect.reload());
+		.pipe(reload({stream: true}));
 });
-//===========================================
+// PHP
+// ===========================================
+gulp.task('php:build', function(){
+	gulp.src(path.build.php)
+		.pipe(reload({stream: true}));
+});
+// JavaScript
+// ===========================================
+gulp.task('js:build', function () {
+	gulp.src(path.build.js)
+		.pipe(sourcemaps.init())
+		.pipe(uglify())
+		.pipe(rename(function (path) {
+			path.extname = ".min.js"
+		}))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest(path.build.jsMin))
+		.pipe(reload({stream: true}));
+});
+// SASS/SCSS
+// ===========================================
 gulp.task('sass:build', function () {
-	gulp.src(path.build.html)
+	gulp.src(path.build.sass)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
-		.pipe(prefixer('last 10 version'))
+		.pipe(prefixer('last 20 version'))
 		.pipe(rename(function (path) {
-			path.extname = "style.css"
+			path.extname = ".css"
 		}))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(path.build.css))
-		.pipe(connect.reload());
+		.pipe(minifyCss())
+		.pipe(rename(function (path) {
+			path.extname = ".min.css"
+		}))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest(path.build.css))
+		.pipe(reload({stream: true}));
 });
-// Img
+// Img min
 // ===========================================
 gulp.task('image:build', function () {
 	gulp.src(path.build.image)
@@ -103,24 +130,23 @@ gulp.task('img:build', function () {
 gulp.task('fonts:build', function() {
 	gulp.src(path.build.fonts)
 		.pipe(gulp.dest(path.build.fonts))
+		.pipe(reload({stream: true}));
 });
 // Watch
 // ===========================================
-// gulp.task('watch', function(){
-// 	gulp.watch(path.build.sass, ['sass'])
-// 	gulp.watch(path.build.html, ['html'])
-// });
-
 gulp.task('watch', function(){
 	watch([path.build.html], function(event, cb) {
 		gulp.start('html:build');
 	});
-	// watch([path.build.style], function(event, cb) {
-	// 	gulp.start('sass:build');
-	// });
-	// watch([path.watch.js], function(event, cb) {
-	// 	gulp.start('js:build');
-	// });
+	watch([path.build.php], function(event, cb) {
+		gulp.start('php:build');
+	});
+	watch([path.build.sass], function(event, cb) {
+		gulp.start('sass:build');
+	});
+	watch([path.build.jsW], function(event, cb) {
+		gulp.start('js:build');
+	});
 	watch([path.build.image], function(event, cb) {
 		gulp.start('image:build');
 	});
@@ -133,11 +159,12 @@ gulp.task('watch', function(){
 });
 gulp.task('build', [
 	'html:build',
-	// 'js:build',
-	// 'sass:build',
-	'fonts:build'
-	// 'image:build',
-	// 'img:build'
+	'php:build',
+	'js:build',
+	'sass:build',
+	'fonts:build',
+	'image:build',
+	'img:build'
 ]);
 //===========================================
-gulp.task('default', ['build','connect','watch']);
+gulp.task('default', ['build', 'webserver', 'watch']);
