@@ -17,20 +17,12 @@
 <div class="wrapper">
 	<header id="header"></header>
 	<div class="content-wrap">
-dsadad  dsdas das d d dsad sa
-
-		<ul>
-			<li>dsddddddddddddddddddddd</li>
-			<li>dsa</li>
-			<li>dsa</li>
-			<li>dsa</li>
-			<li>dsa</li>
-		</ul>
+		<h1>Руслан <br> привет!</h1>
 	</div>
 	<footer id="footer"></footer>
 </div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="js/script.js"></script>
+	<script src="js/scripts.js"></script>
 	<!--[if lte IE 9]>
 <script src="js/lib/placeholder.min.js"></script>
 <script src="js/lib/jquery.transition.min.js"></script>
