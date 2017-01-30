@@ -5,15 +5,17 @@ Author: magl88
 Author URI: http://magl88.net/
 */
 //===========================================
-@import '_static.scss';
-@import '_mod.scss';
+@import '_static';
+@import '_mod';
+@import '_sprite';
 body{
-	border-radius: 4px;
-	background: #000;
 	color: green;
+	background: linear-gradient(45deg, #ccc, #F85703);
 	padding: 10px;
 }
 h1{
-	font-size: 250px;
+	font-size: 50px;
 	text-align: center;
+	@include sprite($icon-1);
+	padding-left: 60px;
 }

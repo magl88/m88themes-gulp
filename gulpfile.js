@@ -3,12 +3,14 @@
 var gulp = require('gulp'),
 	rename = require('gulp-rename'),
 	sourcemaps = require('gulp-sourcemaps'),
+	pug = require('gulp-pug'),
 	sass = require('gulp-sass'),
 	prefixer = require('gulp-autoprefixer'),
 	minifyCss = require('gulp-minify-css'),
 	uglify = require('gulp-uglify'),
 	imagemin = require('gulp-imagemin'),
 	pngquant = require('imagemin-pngquant'),
+	spritesmith = require('gulp.spritesmith'),
 	connect = require('gulp-connect-php'),
 	browserSync = require("browser-sync"),
 	reload = browserSync.reload,
@@ -24,13 +26,18 @@ var path = {
 		fonts: 'dist/fonts/'
 	},
 	build: {
+		build: 'build/',
 		html: 'build/**/*.html',
+		pug: 'build/pug/*.pug',
 		php: 'build/**/*.php',
 		jsW: 'build/js/**/*.js',
 		js: 'build/js/scripts.js',
 		jsMin: 'build/js/',
+		sassPaths: 'build/sass/',
 		sass: 'build/sass/**/*.+(sass|scss)',
 		css: 'build/css/',
+		icon: 'build/img/icons/*.*',
+		imgPaths: 'build/img/',
 		img: 'build/img/**/*.*',
 		image: 'build/image/**/*.*',
 		fonts: 'build/fonts/**/*.*'
@@ -60,7 +67,12 @@ gulp.task('connect-sync', function () {
 		base: './build/'
 	}, function () {
 		browserSync({
-			proxy: '127.0.0.1:8000'
+			proxy: '127.0.0.1:8000',
+			tunnel: "magl88net",
+			online: true,
+			host: 'localhost',
+			port: 9000,
+			logPrefix: "Frontend_Devil"
 		});
 	});
 });
@@ -73,13 +85,22 @@ gulp.task('clean', function (cb) {
 // ===========================================
 gulp.task('html:build', function () {
 	gulp.src(path.build.html)
-		.pipe(reload({stream: true}));
+	.pipe(reload({stream: true}));
+});
+// PUG
+// ===========================================
+gulp.task('pug:build', function () {
+	gulp.src(path.build.pug)
+		.pipe(pug())
+		.pipe(gulp.dest('./build'))
+		// .pipe(gulp.dest(path.build.build));
+		// .pipe(reload({stream: true}));
 });
 // PHP
 // ===========================================
 gulp.task('php:build', function () {
 	gulp.src(path.build.php)
-		.pipe(reload({stream: true}));
+	.pipe(reload({stream: true}));
 });
 // JavaScript
 // ===========================================
@@ -102,7 +123,7 @@ gulp.task('sass:build', function () {
 	gulp.src(path.build.sass)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
-		.pipe(prefixer('last 20 version'))
+		.pipe(prefixer('last 20 versions'))
 		.pipe(rename(function (path) {
 			path.extname = ".css"
 		}))
@@ -112,12 +133,25 @@ gulp.task('sass:build', function () {
 		.pipe(rename(function (path) {
 			path.extname = ".min.css"
 		}))
-		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(path.build.css))
 		.pipe(reload({stream: true}));
 });
-// Img min
+// Img min / sprite
 // ===========================================
+gulp.task('sprite:build', function () {
+	var spriteData = gulp.src(path.build.icon)
+		.pipe(spritesmith({
+			imgName: 'sprite.png',
+			cssName: '_sprite.scss',
+			algorithm: 'diagonal',
+			// padding: 5,
+			imgPath: '../img/sprite.png'
+		}))
+	.pipe(reload({stream: true}));
+	spriteData.img.pipe(gulp.dest(path.build.imgPaths)); // путь, куда сохраняем картинку
+	spriteData.css.pipe(gulp.dest(path.build.sassPaths)); // путь, куда сохраняем стили
+	// return spriteData.pipe(gulp.dest(path.build.imgPaths));
+});
 gulp.task('image:build', function () {
 	gulp.src(path.build.image)
 		.pipe(imagemin({
@@ -153,6 +187,9 @@ gulp.task('watch', function () {
 	watch([path.build.html], function (event, cb) {
 		gulp.start('html:build');
 	});
+	watch([path.build.pug], function (event, cb) {
+		gulp.start('pug:build');
+	});
 	watch([path.build.php], function (event, cb) {
 		gulp.start('php:build');
 	});
@@ -161,6 +198,9 @@ gulp.task('watch', function () {
 	});
 	watch([path.build.jsW], function (event, cb) {
 		gulp.start('js:build');
+	});
+	watch([path.build.sprite], function (event, cb) {
+		gulp.start('sprite:build');
 	});
 	watch([path.build.image], function (event, cb) {
 		gulp.start('image:build');
@@ -175,10 +215,12 @@ gulp.task('watch', function () {
 //===========================================
 gulp.task('default', [
 	'html:build',
+	'pug:build',
 	'php:build',
 	'js:build',
 	'sass:build',
 	'fonts:build',
+	'sprite:build',
 	'image:build',
 	'img:build',
 	'connect-sync',

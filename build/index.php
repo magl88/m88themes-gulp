@@ -1,31 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-	<title>M88themes</title>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
-	<link rel="stylesheet" type="text/css" href="css/style.min.css">
-	<!--[if lte IE 9]>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-sham.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-</head>
-<body>
-<div class="wrapper">
-	<header id="header"></header>
+<?php include "header.php";?>
 	<div class="content-wrap">
-		<h1>Руслан <br> привет!</h1>
+		<h1>JavaScript!</h1>
 	</div>
-	<footer id="footer"></footer>
-</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="js/scripts.js"></script>
-	<!--[if lte IE 9]>
-<script src="js/lib/placeholder.min.js"></script>
-<script src="js/lib/jquery.transition.min.js"></script>
-<![endif]-->
-</body>
-</html>
+<?php include "footer.php"?>
