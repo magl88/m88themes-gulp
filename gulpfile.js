@@ -119,22 +119,23 @@ gulp.task('js:build', function () {
 // SASS/SCSS
 // ===========================================
 gulp.task('sass:build', function () {
-	gulp.src(path.build.sass)
-		.pipe(sourcemaps.init())
-		.pipe(sass().on('error', sass.logError))
-		.pipe(prefixer('last 20 versions'))
-		.pipe(rename(function (path) {
-			path.extname = ".css"
-		}))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest(path.build.cssPaths))
-		.pipe(minifyCss())
-		.pipe(rename(function (path) {
-			path.extname = ".min.css"
-		}))
-		.pipe(gulp.dest(path.build.cssPaths))
-		.pipe(reload({stream: true}));
 });
+gulp.src(path.build.sass)
+	.pipe(sourcemaps.init())
+	.pipe(sass().on('error', sass.logError))
+	.pipe(prefixer('last 20 versions'))
+	.pipe(rename(function (path) {
+		path.extname = ".css"
+	}))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest(path.build.cssPaths))
+	.pipe(minifyCss())
+	.pipe(sourcemaps.write())
+	.pipe(rename(function (path) {
+		path.extname = ".min.css"
+	}))
+	.pipe(gulp.dest(path.build.cssPaths))
+	.pipe(reload({stream: true}));
 // Img min / sprite
 // ===========================================
 gulp.task('sprite:build', function () {
