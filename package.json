@@ -1,5 +1,5 @@
 {
-  "name": "gulp-m88themes",
+  "name": "m88thems-gulp",
   "version": "1.0.0",
   "description": "Template for gulp-pug(jade)",
   "main": "index.js",
@@ -21,12 +21,14 @@
     "gulp-clean-css": "^2.3.2",
     "gulp-concat": "^2.6.1",
     "gulp-imagemin": "^3.1.1",
+    "gulp-notify": "^3.0.0",
+    "gulp-order": "^1.1.1",
     "gulp-pug": "^3.2.0",
     "gulp-rename": "^1.2.2",
+    "gulp-rigger": "^0.5.8",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.0",
     "gulp-uglify": "^2.0.1",
-    "gulp-watch": "^4.3.11",
     "gulp.spritesmith": "^6.3.0",
     "imagemin-pngquant": "^5.0.0"
   }

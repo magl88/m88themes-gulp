@@ -11,15 +11,20 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	sourcemaps = require('gulp-sourcemaps'),
 	concat = require('gulp-concat'),
+	order = require("gulp-order"),
 	uglify = require('gulp-uglify'),
 	spritesmith = require('gulp.spritesmith'),
 	browserSync = require('browser-sync'),
-	reload = browserSync.reload;
+	reload = browserSync.reload,
+	notify = require("gulp-notify"),
+	rigger = require('gulp-rigger');
 //===========================================
 var path = {
 	build: {
 		home: 'build/',
-		html: './build/**/*.html',
+		html: 'build/**/*.html',
+		htmlRigger: 'build/html/*.html',
+		htmlRiggerFiles: 'build/html/**/*.html',
 		pug:  'build/pug/**/*.pug',
 		pugFile:  'build/pug/*.pug',
 		php:  'build/**/*.php',
@@ -55,18 +60,26 @@ gulp.task('webserver', function () {
 		// 	baseDir: "./build/"
 		// },
 		proxy: "gulp.loc",
-		tunnel: "magl88net",
-		online: false,
+		online: true,
 		host: 'localhost',
-		port: 9000,
+		// tunnel: "magl88net",
+		// port: 9000,
 		logPrefix: "Frontend_Devil"
 	});
+});
+// HTML
+// ===========================================
+gulp.task('html:build', function () {
+	gulp.src(path.build.htmlRigger)
+		.pipe(rigger())
+		.pipe(gulp.dest(path.build.home))
+		.pipe(reload({stream: true}));
 });
 // PUG
 // ===========================================
 gulp.task('pug:build', function () {
 	return gulp.src(path.build.pugFile)
-		.pipe(pug())
+		.pipe(pug().on("error", notify.onError()))
 		.pipe(gulp.dest(path.build.home))
 		.pipe(reload({stream: true}));
 });
@@ -74,6 +87,10 @@ gulp.task('pug:build', function () {
 // ===========================================
 gulp.task('js:build', function(){
 	return gulp.src(path.build.jsLib)
+		.pipe(order([
+			'jquery.js',
+			path.build.jsLib
+		]))
 		.pipe(sourcemaps.init())
 		.pipe(concat('scripts.js'))
 		.pipe(uglify())
@@ -104,7 +121,7 @@ gulp.task('jsMain:build', function(){
 gulp.task('sass:build', function () {
 	return gulp.src(path.build.sass)
 		.pipe(sourcemaps.init())
-		.pipe(sass().on('error', sass.logError))
+		.pipe(sass().on("error", notify.onError()))
 		.pipe(autoprefixer(['last 20 versions', '> 1%', 'ie > 8']))
 		.pipe(rename(function (path) {
 			path.extname = ".css"
@@ -173,6 +190,7 @@ gulp.task('dist', ['clean:dist'], function () {
 // ===========================================
 gulp.task('watch', function () {
 	// gulp.watch(path.build.html).on('change', browserSync.reload);
+	gulp.watch(path.build.htmlRiggerFiles, ['html:build']);
 	gulp.watch(path.build.pug, ['pug:build']);
 	gulp.watch(path.build.php).on('change', browserSync.reload);
 	gulp.watch(path.build.js).on('change', browserSync.reload);

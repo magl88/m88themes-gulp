@@ -55,9 +55,10 @@ html,body {
 }
 body {
 	font-size: 14px;
-	color: #484848;
+	color: #000000;
 	font-family: 'Roboto', sans-serif;
 	position: relative;
+	background: #818181;
 }
 .wrapper{
 	position: relative;
@@ -80,29 +81,4 @@ body {
 	left: 0;
 	height: 180px;
 	margin-top: 30px;
-	border-top:1px solid #c2c2c2;
-
-
 }
-
-.foot-nav-wrap{
-	height: 124px;
-	width: 100%;
-	background: #0e76bc;
-}
-nav {
-	ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	li { display: inline-block; }
-
-	a {
-		display: block;
-		padding: 6px 12px;
-		text-decoration: none;
-	}
-}
-//=====
