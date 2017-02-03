@@ -1,4 +1,4 @@
-# gulp-m88themes
+# m88themes-gulp
 Theme for PSD to HTML 
 
 Gulp task for:
