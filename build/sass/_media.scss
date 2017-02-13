@@ -1,0 +1,66 @@
+@import "vars";
+@import "mixins";
+
+/*==========  Desktop First  ==========*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px){
+	/**/
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px){
+	/**/
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px){
+	/**/
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px){
+	/**/
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px){
+	/**/
+}
+
+/*==========  Mobile First  ==========*/
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px){
+	/**/
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px){
+	/**/
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px){
+	/**/
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px){
+	ul.nav li.dropdown.show-on-hover:hover > ul.dropdown-menu { /* для раскрывания субменю по наведению */
+		display: block;
+	}
+	.comment-list .children { /* для комментов */
+		padding: 0;
+		margin-left: 74px;
+		padding-bottom: 15px;
+	}
+	.comment-list .media {
+		margin-top: 0;
+	}
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px){
+	/**/
+}
