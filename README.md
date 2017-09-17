@@ -34,5 +34,11 @@ Gulp task for:
 
 `npm i`
 
-`gulp`
+`gulp` - default html
+
+`gulp html` - html template include
+
+`gulp pug` - pug to html
+
+`gulp php` - php server (open server)
 

@@ -19,55 +19,65 @@ var gulp = require('gulp'),
 	notify = require("gulp-notify"),
 	rigger = require('gulp-rigger');
 //===========================================
-var path = {
-	build: {
-		home: 'build/',
-		html: 'build/**/*.html',
-		htmlRigger: 'build/html/*.html',
-		htmlRiggerFiles: 'build/html/**/*.html',
-		pug:  'build/pug/**/*.pug',
-		pugFile:  'build/pug/*.pug',
-		php:  'build/**/*.php',
-		js:   'build/js/**/*.js',
-		jsPath: 'build/js/',
-		jsLib: 'build/js/lib/**/*.js',
-		jsLibPath: 'build/js/lib/',
-		sass: 'build/sass/**/*.+(sass|scss)',
-		sassPath: 'build/sass/',
-		css:  'build/css/**/*.css',
-		cssPath:  'build/css/',
-		icon: 'build/img/icons/*.+(png|jpg)',
-		img:  'build/img/**/*.*',
-		imgPath:  'build/img/',
-		image:  'build/image/**/*.*',
-		imagePath:  'build/image/',
-		fonts:  'build/fonts/**/*.*'
-	},
-	dist: {
-		home: 'dist/',
-		js: 'dist/js/',
-		css: 'dist/css/',
-		img: 'dist/img/',
-		image: 'dist/image/',
-		fonts: 'dist/fonts/'
-	}
-};
+var buidPath = 'build/',
+	path = {
+		build: {
+			home: buidPath,
+			html: buidPath + '**/*.html',
+			htmlHome: buidPath + '*.html',
+			htmlRigger: buidPath + 'html/*.html',
+			htmlRiggerFiles: buidPath + 'html/**/*.html',
+			pug:  buidPath + 'pug/**/*.pug',
+			pugFile:  buidPath + 'pug/*.pug',
+			php:  buidPath + '**/*.php',
+			js:   buidPath + 'js/**/*.js',
+			jsPath: buidPath + 'js/',
+			jsLib: buidPath + 'js/lib/**/*.js',
+			jsLibPath: buidPath + 'js/lib/',
+			sass: buidPath + 'sass/**/*.+(sass|scss)',
+			sassPath: buidPath + 'sass/',
+			css:  buidPath + 'css/**/*.css',
+			cssPath:  buidPath + 'css/',
+			icon: buidPath + 'img/icons/*.+(png|jpg)',
+			img:  buidPath + 'img/**/*.*',
+			imgPath:  buidPath + 'img/',
+			image:  buidPath + 'image/**/*.*',
+			imagePath:  buidPath + 'image/',
+			fonts:  buidPath + 'fonts/**/*.*'
+		},
+		dist: {
+			home: 'dist/',
+			js: 'dist/js/',
+			css: 'dist/css/',
+			img: 'dist/img/',
+			image: 'dist/image/',
+			fonts: 'dist/fonts/'
+		}
+	};
 // Server
 //===========================================
-gulp.task('webserver', function () {
+gulp.task('openServer', function () {
 	browserSync({
-		// server: {
-		// 	baseDir: "./build/"
-		// },
-		proxy: "gulp.loc",
+		proxy: 'js.loc/', // local server
 		online: true,
 		host: 'localhost',
-		// tunnel: "magl88net",
-		// port: 9000,
-		logPrefix: "Frontend_Devil"
+    port: 9000,
+		logPrefix: "openServer"
 	});
 });
-// HTML
+//===========================================
+gulp.task('webServer', function () {
+	browserSync({
+		server: {
+			baseDir: "./build/"
+		},
+		online: true,
+		host: 'localhost',
+		port: 9000,
+		logPrefix: "webServer"
+	});
+});
+// HTML/PHP
 // ===========================================
 gulp.task('html:build', function () {
 	gulp.src(path.build.htmlRigger)
@@ -93,6 +103,7 @@ gulp.task('js:build', function(){
 		]))
 		.pipe(sourcemaps.init())
 		.pipe(concat('scripts.js'))
+    .pipe(gulp.dest(path.build.jsPath))
 		.pipe(uglify())
 		.pipe(rename(function (path) {
 			path.extname = ".min.js"
@@ -189,18 +200,60 @@ gulp.task('dist', ['clean:dist'], function () {
 // Watch
 // ===========================================
 gulp.task('watch', function () {
-	// gulp.watch(path.build.html).on('change', browserSync.reload);
-	gulp.watch(path.build.htmlRiggerFiles, ['html:build']);
-	gulp.watch(path.build.pug, ['pug:build']);
-	gulp.watch(path.build.php).on('change', browserSync.reload);
-	gulp.watch(path.build.js).on('change', browserSync.reload);
-	gulp.watch(path.build.img).on('change', browserSync.reload);
-	gulp.watch(path.build.image).on('change', browserSync.reload);
-	gulp.watch(path.build.fonts).on('change', browserSync.reload);
-	gulp.watch(path.build.icon, ['sprite:build']);
-	gulp.watch(path.build.sass, ['sass:build']);
+	gulp.watch(path.build.htmlHome).on('change', browserSync.reload);
+  gulp.watch(path.build.fonts).on('change', browserSync.reload);
+  gulp.watch(path.build.icon, ['sprite:build']);
+  gulp.watch(path.build.img).on('change', browserSync.reload);
+  gulp.watch(path.build.image).on('change', browserSync.reload);
+  gulp.watch(path.build.sass, ['sass:build']);
 	gulp.watch(path.build.jsLib, ['js:build']);
-	gulp.watch(path.build.jsPath + 'main.js', ['jsMain:build']);
+  gulp.watch(path.build.jsPath + 'main.js', ['jsMain:build']);
+  gulp.watch(path.build.js).on('change', browserSync.reload);
 });
+// ===========================================
+gulp.task('watchHtml', function () {
+  gulp.watch(path.build.htmlRiggerFiles, ['html:build']);
+  gulp.watch(path.build.fonts).on('change', browserSync.reload);
+  gulp.watch(path.build.icon, ['sprite:build']);
+  gulp.watch(path.build.img).on('change', browserSync.reload);
+  gulp.watch(path.build.image).on('change', browserSync.reload);
+  gulp.watch(path.build.sass, ['sass:build']);
+	gulp.watch(path.build.jsLib, ['js:build']);
+  gulp.watch(path.build.jsPath + 'main.js', ['jsMain:build']);
+  gulp.watch(path.build.js).on('change', browserSync.reload);
+});
+// ===========================================
+gulp.task('watchPug', function () {
+	gulp.watch(path.build.pug, ['pug:build']);
+  gulp.watch(path.build.fonts).on('change', browserSync.reload);
+  gulp.watch(path.build.icon, ['sprite:build']);
+  gulp.watch(path.build.img).on('change', browserSync.reload);
+  gulp.watch(path.build.image).on('change', browserSync.reload);
+  gulp.watch(path.build.sass, ['sass:build']);
+  gulp.watch(path.build.jsLib, ['js:build']);
+  gulp.watch(path.build.jsPath + 'main.js', ['jsMain:build']);
+  gulp.watch(path.build.js).on('change', browserSync.reload);
+});
+// ===========================================
+gulp.task('watchPhp', function () {
+  gulp.watch(path.build.php).on('change', browserSync.reload);
+  gulp.watch(path.build.fonts).on('change', browserSync.reload);
+  gulp.watch(path.build.icon, ['sprite:build']);
+  gulp.watch(path.build.img).on('change', browserSync.reload);
+  gulp.watch(path.build.image).on('change', browserSync.reload);
+  gulp.watch(path.build.sass, ['sass:build']);
+  gulp.watch(path.build.jsLib, ['js:build']);
+  gulp.watch(path.build.jsPath + 'main.js', ['jsMain:build']);
+  gulp.watch(path.build.js).on('change', browserSync.reload);
+});
+
+// Gulp task default
 //===========================================
-gulp.task('default', ['pug:build','js:build','jsMain:build','sass:build','sprite:build','webserver','watch']);
+gulp.task('default', ['sprite:build','sass:build','js:build','jsMain:build','webServer','watch']);
+//===========================================
+gulp.task('html', ['html:build','sprite:build','sass:build','js:build','jsMain:build','webServer','watchHtml']);
+//===========================================
+gulp.task('pug', ['pug:build','sprite:build','sass:build','js:build','jsMain:build','webServer','watchPug']);
+//===========================================
+gulp.task('php', ['sprite:build','sass:build','js:build','jsMain:build','openServer','watchPhp']); // only with php server
+//===========================================

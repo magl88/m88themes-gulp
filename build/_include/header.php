@@ -30,6 +30,7 @@
 	<link rel="apple-touch-icon" href="img/favicon/apple-icon.png">
 	<meta property="og:image" content="img/favicon/favicon-96x96.png">
 	<!--	==========================-->
+	<!--	==========================-->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/style.min.css">
 	<!--[if lt IE 9]>
@@ -40,8 +41,26 @@
 <body>
 <div class="wrapper">
 	<header id="header">
-
+		<!-- Fixed navbar -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Меню</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">M88Themes</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav top-menu">
+						<li><a href="#">Главная</a></li>
+						<li><a href="#">О нас</a></li>
+						<li><a href="#">Контаты</a></li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+		</nav>
 	</header>
-
-
-
+	<div class="content-wrapper">

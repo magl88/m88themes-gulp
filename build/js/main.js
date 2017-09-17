@@ -2,17 +2,22 @@
 (function($){
 	$(document).ready(function(){
 		// ======================
-		for (var i in navigator) {
-			console.log(i +' : ' + navigator[i]);
-		}
-		var ua = navigator.userAgent;
-		// var reg = ua.search(/Chrome/gi)
-		// console.log(ua);
-		if (ua.search(/Chrome/gi)) {
-			console.log('chrome');
-		}else {
-			console.log('errod');
-		}
+// 		var arr = [], num;
+// for(var i = 0; i < arr.length + 1; i++){
+//   num = prompt('Nym', 0)
+// 	if(num === "" || num === null || isNaN(num)){
+// 		break
+// 	}else {
+// 	  arr.push(+num)
+//   }
+// }
+// console.log(arr)
+//     var sum = 0;
+//     for (var k = 0; k < arr.length; k++){
+//       sum = sum + arr[k]
+//     }
+//     console.log(sum)
+
 		// ======================
 	});
 })(jQuery)
